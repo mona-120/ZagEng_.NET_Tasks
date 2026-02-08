@@ -1,0 +1,58 @@
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            List<int> numbers = new List<int> { 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+        }
+
+        public (List<int> odd_num, List<int> even_num, List<int> prime_num) nums(List<int> numbers)
+        {
+            List<int> odd_num = new List<int>();
+            List<int> even_num = new List<int>();
+            List<int> prime_num = new List<int>();
+            foreach (int n in numbers)
+            {
+                if (isodd(n))
+                    odd_num.Add(n);
+                else if (iseven(n))
+                    even_num.Add(n);
+                if (isprime(n))
+                    prime_num.Add(n);
+            }
+            return (odd_num, even_num, prime_num);
+
+        }
+        public bool isodd(int x)
+        {
+            if (x % 2 == 1)
+                return true;
+            else
+                return false;
+        }
+        public bool iseven(int x)
+        {
+            if (x % 2 == 0)
+                return true;
+            else
+                return false;
+        }
+        public bool isprime(int x)
+        {
+            if (x == 2)
+                return true;
+            if (iseven(x) || x == 1)
+                return false;
+            else
+            {
+                for(int i=2; i*i <= x; i++)
+                {
+                    if(x%i == 0)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+    }
+}

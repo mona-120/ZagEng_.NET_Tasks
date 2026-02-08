@@ -1,0 +1,64 @@
+namespace Q5
+{
+        internal class Program
+        {
+            static void Main(string[] args)
+            {
+            Payment p = new Payment(102, "Ali",200, 25);
+            p.start();
+            }
+        }
+
+        class Payment
+        {
+           private decimal price = 500;
+           private int max_time = 50;
+        public decimal Paid { get; set; }
+        public int Time_taken { get; set; }
+            public int Id { get; set; }
+            public string Name { get; set; }
+            public Payment(int id, string name , decimal paid , int time)
+            {
+                Id = id;
+                Name = name;
+                Paid = paid;
+            Time_taken = time;
+            }
+            public void start()
+            {
+            try
+            {
+                if (price > Paid)
+                {
+                    throw new InsufficientBalanceException("Paid amount isn't enough!");
+                }
+                if (Time_taken > max_time)
+                {
+                    throw new PaymentTimeoutException("Time out! try again.");
+                }
+            }
+            catch (Exception e) 
+            {
+                Console.WriteLine($"Process faild due to {e.Message}");
+            }
+            finally 
+            {
+                Console.WriteLine("End.");
+            }
+         }
+
+        }
+        class InsufficientBalanceException : Exception
+        {
+            public decimal Account { get; set; }
+            public InsufficientBalanceException(string message) : base(message) { }
+           
+        }
+
+    class PaymentTimeoutException : Exception
+    {
+        public int time { get; set; }
+        public PaymentTimeoutException(string message) : base(message) { }
+        
+    }
+}

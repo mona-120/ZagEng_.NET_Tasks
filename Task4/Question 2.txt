@@ -1,0 +1,56 @@
+internal class Program
+{
+    static void Main(string[] args)
+    { 
+        
+        Feature f = new Feature(FeatureName.AdminPanel, 1.0);
+        f.state();
+
+    }
+}
+  
+class Feature
+{
+    private FeatureName name;
+    private Activity act;
+    private readonly double sys_version;
+    private double min_req_version;
+    private const double min_login = 1.0;
+    private const double min_Export = 1.5;
+    private const double min_AdminPanel = 2.0;
+
+    public FeatureName Name { get; set; }
+    public double Sys_version { get; set; }
+
+    public Feature(FeatureName name, double sys_version)
+    {
+        this.name = name;
+        this.sys_version = sys_version;
+
+        if (name == FeatureName.Login)
+            min_req_version = min_login;
+        else if (name == FeatureName.Export)
+            min_req_version = min_Export;
+        else
+            min_req_version = min_AdminPanel;
+    }
+    public void state()
+    {
+        Activity state = min_req_version > sys_version ? Activity.Disabled : Activity.Enable;
+        string result = state == Activity.Disabled ? " Feature can't run" : "Feature can run";
+        Console.WriteLine(result);
+    }
+
+
+}
+enum FeatureName
+{
+    Login,
+    Export,
+    AdminPanel
+}
+enum Activity
+{
+    Disabled = 0,
+    Enable
+} 
