@@ -1,0 +1,68 @@
+namespace Linq_Task
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            List<Course> courses =
+            [
+                new("C# Basics" , ["Ali","Sara","Omar"]),
+                new("LINQ Mastery" , ["Sara","Mona","Ali"]),
+                new("ASP.NET Core" , ["Yara","Omar","Karim"])
+            ];
+
+
+            // Flatten to a single list of ALL student names
+            var StudentName = courses.SelectMany(c => c.Students);
+            Console.WriteLine("Students with dublicates: ");
+            foreach (var studenr in StudentName)
+            {
+                Console.WriteLine(studenr);
+            }
+
+            // Get a distinct list of all student names
+            var DistictStudentName = courses.SelectMany(c => c.Students)
+                                            .Distinct();
+            Console.WriteLine("\nStudents without dublicates: ");
+            foreach (var student in DistictStudentName)
+            {
+                Console.WriteLine(student);
+            }
+
+            // students who appear in MORE THAN ONE course
+            var MulticourseStudent = courses.SelectMany(c => c.Students)
+                                            .GroupBy(name => name).Where(c => c.Count() > 1);
+                                            
+            Console.WriteLine("\nStudents who appear in MORE THAN ONE course: ");
+            foreach (var student in MulticourseStudent)
+            {
+                Console.WriteLine(student.Key);
+            }
+
+            // SelectMany with result selector to get (CourseName, StudentName)
+            var StudentCourse = courses.SelectMany(c => c.Students,
+                                                  (CourseName, StudentName) => new
+                                                  {
+                                                      Name = StudentName,
+                                                      Course = CourseName.Title
+                                                  })
+                                                  .GroupBy(c => c.Name);
+
+
+            foreach (var student in StudentCourse)
+            {
+                Console.Write($"\nStudentName: {student.Key} , Cources: ");
+                
+                foreach(var course in student)
+                {
+                    Console.Write($"{course.Course}  ");
+                }
+            }
+
+
+        }
+
+
+    }
+    record Course(string Title, List<string> Students);
+}

@@ -1,0 +1,30 @@
+namespace Linq_Task
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            List<int> scores = [88, 92, 75, 60, 55, 80, 91, 45];
+
+            // return scors >= 70 until the codition faild even there are scores that meet the condition after it
+            Console.WriteLine("Taken scores While score >= 70: ");
+            var Take_While = scores.TakeWhile(x => x >= 70);
+            GetScore(Take_While);
+
+            // Skip scores while score >= 70 until the condition faild then get remaining elements 
+            Console.WriteLine("\nremaining elements after skip scores >= 70: ");
+            var Skip_While = scores.SkipWhile(x => x >= 70);
+            GetScore(Skip_While);
+
+            // Where check all items while (TakeWhile , SkipWhile) check items until the condition is faild ignoring remaining elements
+        }
+
+        public static void GetScore(IEnumerable<int> scores)
+        {
+            foreach (var score in scores)
+            {
+                Console.WriteLine(score);
+            }
+        }
+    }
+}

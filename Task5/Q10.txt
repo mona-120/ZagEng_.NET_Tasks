@@ -1,0 +1,52 @@
+namespace Linq_Task
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            List<string> words = [ "apple", "fig", "banana", "kiwi", "grape", "mango", "pear", "plum" ];
+
+            // filter words longer than 4 characters
+            var WordsLonger4Char = words.Where(w => w.Length > 4);
+            Console.WriteLine("words longer than 4 characters: ");
+            DisplayResult(WordsLonger4Char);
+
+            // Filter words at even indexes
+            var EvenIndexes = words.Where((item, index) => index % 2 == 0);
+            Console.WriteLine("\nwords at even indexes: ");
+            DisplayResult(EvenIndexes);
+
+            // Filter words that are BOTH longer than 4 chars AND at an even index
+            var BothConditions = words.Where((w, index) => index % 2 == 0 && w.Length > 4);
+            Console.WriteLine("\nwords at even indexes and longer than 4 characters: ");
+            DisplayResult(BothConditions);
+
+            // Find index of 'mango' from first filteration by loop on list
+            var index = 0;
+            foreach (var word in WordsLonger4Char)
+            {
+                if (word != "mango") index++;
+                else break;
+            }
+            Console.WriteLine($"\nIndex of \"mango\" in the filtered result from step1: {index}");
+            // OR 
+            var IndexedList = WordsLonger4Char.Select((w,index) => new
+            {
+                index, 
+                word = w
+            });
+            var MangoIndex = IndexedList.First(w => w.word == "mango").index;
+            Console.WriteLine(MangoIndex);
+
+        }
+
+        public static void DisplayResult(IEnumerable<string> WordsList)
+        {
+            foreach(var word in WordsList)
+            {
+                Console.WriteLine(word);
+            }
+        }
+
+    }    
+}

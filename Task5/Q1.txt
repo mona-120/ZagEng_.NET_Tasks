@@ -1,0 +1,29 @@
+namespace Linq_Task
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            List<int> numbers = [3, 18, 7, 42, 10, 5, 29, 14, 6, 100];
+            // Query syntax return even numbers > 10
+            var query_result = from num in numbers
+                         where num > 10 && num%2 == 0
+                         orderby num descending
+                         select num;
+            Console.WriteLine("Result by query syntax : ");
+            foreach (var num in query_result) 
+            {
+                Console.WriteLine(num);
+            }
+
+            // Fluent syntax return even numbers > 10
+            var fluent_result = numbers.Where(num => num > 10 && num % 2 == 0)
+                                       .OrderByDescending(num => num);
+            Console.WriteLine("\nResult by fluent syntax : ");
+            foreach (var num in fluent_result)
+            {
+                Console.WriteLine(num);
+            }
+        }
+    }
+}

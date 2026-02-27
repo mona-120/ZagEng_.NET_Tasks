@@ -1,0 +1,35 @@
+namespace Linq_Task
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            List<Product> products = 
+                [
+                      new (1, "Laptop", 1200m, "Electronics"),
+                      new (2, "Phone", 800m, "Electronics"),
+                      new (3, "Desk", 350m, "Furniture"),
+                      new (4, "Chair", 150m, "Furniture"),
+                      new (5, "Headphones", 200m, "Electronics")
+                ];
+             
+            // All return true if all elements meet the condition , Any return true if there is at least meet condition 
+            // contains return true if element exist.
+            var Q1 = products.All(p => p.Price > 100);
+            var Q2 = products.Any(p => p.Category == "Gaming");
+            // temp variable store record that's product name = "Chair" as Contains check all values in record  
+            var temp = products.FirstOrDefault(p => p.Name == "Chair");
+            var Q3 = products.Contains(temp);
+            var Q4 = products.All(p => p.Category == "Electronics" && p.Price > 500);
+            var Q5 = products.Any(p => p.Price < 200);
+
+            Console.WriteLine($"Are ALL products priced above 100? {Q1}");
+            Console.WriteLine($"Is THERE ANY product in the \"Gaming\" category? {Q2}");
+            Console.WriteLine($"Does the collection CONTAIN a product named \"Chair\"? {Q3}");
+            Console.WriteLine($"Are ALL Electronics products priced above 500? {Q4}");
+            Console.WriteLine($"Is there ANY product cheaper than 200? {Q5}");
+
+        }
+    }
+    record Product(int Id, string Name, decimal Price, string Category);
+}

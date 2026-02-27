@@ -1,0 +1,63 @@
+namespace Linq_Task
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            List<Employee> employees =
+            [
+                 new ("Ali", "Engineering", 9000m),
+                 new ("Sara", "Engineering", 8500m),
+                 new ("Omar", "HR", 6000m),
+                 new ("Mona", "HR", 6200m),
+                 new ("Yara", "Marketing", 7000m),
+                 new ("Karim", "Marketing", 7500m),
+                 new ("Nada", "Engineering", 9500m)
+            ];
+
+            //Group employees by department and return department name , number of employees and avarage salary
+            var GroupByDept = employees.GroupBy(e => e.Department)
+                                       .Select(g => new
+                                       {
+                                           DepartmentName = g.Key,
+                                           TotalHeadCount = g.Count(),
+                                           AverageSalary = g.Average(e => e.Salary)
+                                       });
+            foreach (var group in GroupByDept)
+            {
+                Console.WriteLine($"{group.DepartmentName} -> Count: {group.TotalHeadCount} , Avg: {group.AverageSalary}");
+            }
+
+            // Group employees by department , select an anonymous object contains (Department Name,Average Salary for each
+            // department) , using 'Maxby' to return object not 'Max' (return value of Max Average Salary). 
+            var DeptWithMaxSalary = employees.GroupBy(e => e.Department)
+                                             .Select(g => new
+                                             {
+                                                 DepartmentName = g.Key,
+                                                 AverageSalary = g.Average(e => e.Salary)
+                                             }).MaxBy(e => e.AverageSalary);
+            Console.WriteLine($"\nThe highest Average salary in: {DeptWithMaxSalary.DepartmentName} -> {DeptWithMaxSalary.AverageSalary}");
+
+
+            // Group employees by department then order employees Descending by salary  
+            var OrderedEmployees = employees.GroupBy(e => e.Department)
+                                            .Select(g => new
+                                            {
+                                                DepartmentName = g.Key,
+                                                EmployeeName = g.OrderByDescending(e => e.Salary)
+                                            });
+            foreach(var group in OrderedEmployees)
+            {
+                Console.WriteLine($"\nDepartment: {group.DepartmentName}");
+
+                foreach(var employee in group.EmployeeName)
+                {
+                    Console.WriteLine($"Name: {employee.Name} , Salary: {employee.Salary}");
+                }
+                
+            }
+
+        }
+    }
+    record Employee(string Name, string Department, decimal Salary);
+}

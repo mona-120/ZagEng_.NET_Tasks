@@ -1,0 +1,52 @@
+namespace Linq_Task
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            List<Product> products =
+                [
+                      new (1, "Laptop", 1200m, "Electronics"),
+                      new (2, "Phone", 800m, "Electronics"),
+                      new (3, "Desk", 350m, "Furniture"),
+                      new (4, "Chair", 150m, "Furniture"),
+                      new (5, "Headphones", 200m, "Electronics")
+                ];
+
+            //---------------------First VS FirstOrDefault---------------------
+            // First return the first element that match the condition if list is null or condition wasn't met it throw an exception
+            // List<Product> products = new List<Product>();  // empty list throw an exception (No match element as there is condition)
+            var resFirst = products.First(p => p.Category == "Electronics");
+            Console.WriteLine(resFirst);
+
+            // FirstOrDefault return default value if there is no matching elements
+            var default_ = new Product(0, "NotFound", 00.0m, "NotFound"); // Default value return when there is no matching values
+            var resFirOrDef = products.FirstOrDefault(p => p.Category == "Electronics", default_);
+            Console.WriteLine(resFirOrDef);
+
+
+            //---------------------Last VS LastOrDefault---------------------
+            // we use LastOrDefault to avoid any exception if list is null or condition wasn't met
+            // if we use Last it may cause an exception if list is null or condition wasn't met
+            var resLastOrDef = products.LastOrDefault(p => p.Price > 1000m, default_);
+            Console.WriteLine(resLastOrDef);
+
+
+            //---------------------Single VS SingleOrDefault---------------------
+            // Single return value if there is only one element that meet the condition.
+            // return Exception if list is null , there is no matching values or there are more than one value meet condition.
+            // In this query it throw exception even we use SingleOrDefault as there are more than one value meet condition. 
+            var resSingle = products.Single(p => p.Price > 300);
+            Console.WriteLine(resSingle);
+
+
+            //---------------------ElementAt---------------------
+            // ElementAt return record at this index (0 index) ,throw exception if index > number of elements
+            // To avoid exception we use ElementAtOrDefault
+            var resElementAt = products.ElementAt(3);
+            Console.WriteLine(resElementAt);
+
+        }
+    }
+    record Product(int Id, string Name, decimal Price, string Category);
+}

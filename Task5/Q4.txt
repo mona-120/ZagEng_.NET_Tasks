@@ -1,0 +1,59 @@
+namespace Linq_Task
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            List<Product> products =
+                [
+                      new (1, "Laptop", 1200m, "Electronics"),
+                      new (2, "Phone", 800m, "Electronics"),
+                      new (3, "Desk", 350m, "Furniture"),
+                      new (4, "Chair", 150m, "Furniture"),
+                      new (5, "Headphones", 200m, "Electronics")
+                ];
+
+
+            // Dictionary : key must be unique if it dublicated ,it will throw an exception.
+            // Lookup : key can be dublicated.
+
+
+            var To_Array = products.ToArray();
+            Console.WriteLine("Elements at array : ");
+            foreach (var item in To_Array)
+            {
+                Console.WriteLine(item);
+            }
+
+            var To_Dictionary = products.ToDictionary(p => p.Id,p => p.Name);
+            Console.WriteLine("\nElements at Dictionary : ");
+            foreach (var item in To_Dictionary)
+            {
+                Console.WriteLine(item);
+            }
+
+            var To_Hashset = products.Select(p => p.Name)
+                                     .ToHashSet();
+            Console.WriteLine("\nElements at Hashset : ");
+            foreach (var item in To_Hashset) 
+            { 
+                Console.WriteLine(item); 
+            }
+
+            var To_Lookup = products.ToLookup(p => p.Category);
+            Console.WriteLine("\nElements at Lookup : ");
+            foreach (var group in To_Lookup)
+            {
+                Console.WriteLine(group.Key + ":");
+                foreach (var item in group)
+                {
+                    Console.WriteLine($"Id: {item.Id} , Name: {item.Name} , Price: {item.Price}");
+                }
+            }
+
+            // If keys are duplicated in Dectionary it throw an unhandeled exception.
+            // Lookup consider the values with the same key as a group 
+        }
+    }
+    record Product(int Id, string Name, decimal Price, string Category);
+}
